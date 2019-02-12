@@ -1,0 +1,19 @@
+version: "2.1"
+services:
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_DATABASE: restdb
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=12345 --execute \"SHOW DATABASES;\""
+  myapi:
+    build: .
+    volumes:
+      - .:/code
+    image: wowah/restapi
+    ports:
+      - "8082:8082"
+    depends_on:
+      mysql:
+        condition: service_healthy
