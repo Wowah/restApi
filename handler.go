@@ -76,6 +76,7 @@ func (h StatisticHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	defer rows.Close()
 	results := make(map[string]int)
 	for _, it := range h.WhiteList {
 		results[it] = 0
