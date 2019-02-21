@@ -44,6 +44,7 @@ func (h RestHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	_, err := h.db.Exec(query, &eventType, &curTime)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		atomic.AddInt32(h.CurN, -1)
 		return
 	}
 	w.Write([]byte("Event " + eventType + " successfully registered"))
